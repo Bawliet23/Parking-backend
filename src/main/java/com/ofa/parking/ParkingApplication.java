@@ -5,10 +5,12 @@ import com.ofa.parking.repositories.IFloorRepository;
 import com.ofa.parking.repositories.IParkingAreaRepository;
 import com.ofa.parking.repositories.IParkingRepository;
 import com.ofa.parking.repositories.IParkingSlotRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class ParkingApplication implements CommandLineRunner {
@@ -25,6 +27,11 @@ public class ParkingApplication implements CommandLineRunner {
     @Autowired
     private IFloorRepository floorRepository;
 
+
+    @Bean
+    public ModelMapper getModel(){
+        return new ModelMapper();
+    }
 
     @Override
     public void run(String... args) throws Exception {
