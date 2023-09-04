@@ -1,6 +1,7 @@
 package com.ofa.parking.services;
 
 import com.ofa.parking.dtos.ParkingDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

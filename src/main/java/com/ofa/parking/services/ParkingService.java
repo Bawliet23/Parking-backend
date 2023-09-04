@@ -4,6 +4,7 @@ import com.ofa.parking.dtos.ParkingDto;
 import com.ofa.parking.entities.Parking;
 import com.ofa.parking.repositories.IParkingRepository;
 import com.ofa.parking.utils.Distance;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Data
+@AllArgsConstructor
 public class ParkingService implements IParkingService{
 
     private IParkingRepository iParkingRepository;
@@ -33,6 +34,7 @@ public class ParkingService implements IParkingService{
         Optional<Parking> optionalParking = iParkingRepository.findById(id);
         if (optionalParking.isEmpty()) return null;
         return modelMapper.map(optionalParking.get(),ParkingDto.class);
+
     }
 
     @Override

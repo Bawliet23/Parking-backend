@@ -16,10 +16,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String email;
     private String password;
-    private Long lat;
-    private Long lon;
+    private double lat;
+    private double lon;
     private String addr;
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-
-public class ParkingAreaDto {
+@Data @AllArgsConstructor @NoArgsConstructor
+public class RegisterDto extends UserDto {
+    private String password;
 }

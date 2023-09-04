@@ -21,5 +21,6 @@ public class Reservation {
     private Date startTime;
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
+    @Column(columnDefinition = "boolean default false")
     private boolean isCancelled;
 }
