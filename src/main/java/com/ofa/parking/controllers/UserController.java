@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/user")
 @AllArgsConstructor
+@CrossOrigin(origins="*")
 public class UserController {
     private IUserService iUserService;
     @PostMapping(value = "/signUp",consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -21,13 +22,12 @@ public class UserController {
         if (user==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(userDto);
     }
-    @PostMapping(value = "/signIn",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> sifnIn(@RequestBody LoginDto loginDto){
+        @PostMapping(value = "/signIn",consumes = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<?> signIn(@RequestBody LoginDto loginDto){
         UserDto userDto = iUserService.login(loginDto);
         if (userDto==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(userDto);
     }
-
     @PostMapping("/{userId}/{parkingSlotId}")
     public ResponseEntity<?> reserveParkingSlot(@PathVariable Long userId , @PathVariable Long parkingSlotId , @RequestBody ReservationDto reservationDto) {
         boolean reservation = iUserService.reserve(userId,parkingSlotId,reservationDto);
