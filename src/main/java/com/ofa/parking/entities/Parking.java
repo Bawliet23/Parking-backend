@@ -21,10 +21,15 @@ public class Parking {
     private double lat;
     private double lon;
     private double price;
+    @Transient
+    private int capacity;
     @OneToMany(mappedBy = "parking")
-    private List<Floor> floors= new ArrayList<>();
+    private List<ParkingSlot> parkingSlots= new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private Vehicule parkingType;
-
-
+    @ElementCollection
+    List<String> images = new ArrayList<String>();
+    public int getCapacity() {
+        return parkingSlots.size();
+    }
 }

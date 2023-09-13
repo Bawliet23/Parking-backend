@@ -15,8 +15,6 @@ public class UserDto {
     private Long id;
     private String name;
     private String email;
-    private double lat;
-    private double lon;
-    private String addr;
+
     private List<ReservationDto> reservations = new ArrayList<>();
 }

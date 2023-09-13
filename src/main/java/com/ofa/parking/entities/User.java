@@ -19,9 +19,6 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    private double lat;
-    private double lon;
-    private String addr;
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
 

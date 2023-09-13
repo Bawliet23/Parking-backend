@@ -1,6 +1,7 @@
 package com.ofa.parking.repositories;
 
 import com.ofa.parking.entities.Parking;
+import com.ofa.parking.entities.Vehicule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,11 @@ public interface IParkingRepository extends JpaRepository<Parking,Long> {
     @Query("SELECT s FROM Parking s WHERE " + HAVERSINE_FORMULA + " < :distance ORDER BY "+ HAVERSINE_FORMULA + " DESC")
     List<Parking> findParkingsWithInDistance(@Param("latitude") double latitude, @Param("longitude") double longitude, @Param("distance") double distanceWithInKM);
 
+    List<Parking> findByAddrContainingAndParkingType(String addr, Vehicule parkingType);
 
+    @Query("SELECT p FROM Parking p WHERE " +
+            "(:addr IS NULL OR p.addr LIKE CONCAT('%', :addr, '%')) AND " +
+            "(:parkingType IS NULL OR p.parkingType = :parkingType)")
+    List<Parking> findByAddrAndParkingTypeOptimized(String addr, Vehicule parkingType);
     List<Parking> findAllByAddrContaining(String addr);
 }

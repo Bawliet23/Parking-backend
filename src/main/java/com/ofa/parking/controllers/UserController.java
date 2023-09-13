@@ -19,13 +19,13 @@ public class UserController {
     @PostMapping(value = "/signUp",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> signUp(@RequestBody RegisterDto user) throws Exception {
         UserDto userDto = iUserService.addUser(user);
-        if (user==null) return ResponseEntity.badRequest().build();
+        if (user==null) return ResponseEntity.badRequest().body("No problem");
         return ResponseEntity.ok(userDto);
     }
         @PostMapping(value = "/signIn",consumes = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<?> signIn(@RequestBody LoginDto loginDto){
         UserDto userDto = iUserService.login(loginDto);
-        if (userDto==null) return ResponseEntity.badRequest().build();
+        if (userDto==null) return ResponseEntity.badRequest().body("No problem");
         return ResponseEntity.ok(userDto);
     }
     @PostMapping("/{userId}/{parkingSlotId}")

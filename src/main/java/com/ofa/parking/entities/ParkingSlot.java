@@ -14,8 +14,7 @@ public class ParkingSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     public int number;
-    private boolean isEmpty;
     @ManyToOne
-    private ParkingArea parkingArea;
+    private Parking parking;
 
 }

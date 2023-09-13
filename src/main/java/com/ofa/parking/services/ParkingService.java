@@ -1,8 +1,12 @@
 package com.ofa.parking.services;
 
 import com.ofa.parking.dtos.ParkingDto;
-import com.ofa.parking.entities.Parking;
+import com.ofa.parking.dtos.ReservationDto;
+import com.ofa.parking.entities.*;
 import com.ofa.parking.repositories.IParkingRepository;
+import com.ofa.parking.repositories.IParkingSlotRepository;
+import com.ofa.parking.repositories.IReservationRepository;
+import com.ofa.parking.repositories.IUserRepository;
 import com.ofa.parking.utils.Distance;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,6 +25,9 @@ import java.util.stream.Collectors;
 public class ParkingService implements IParkingService{
 
     private IParkingRepository iParkingRepository;
+    private IParkingSlotRepository parkingSlotRepository;
+    private IUserRepository userRepository;
+    private IReservationRepository reservationRepository;
     private ModelMapper modelMapper;
     @Override
     public List<ParkingDto> getNearestParking(double lon, double lat) {
@@ -38,8 +47,49 @@ public class ParkingService implements IParkingService{
     }
 
     @Override
-    public List<ParkingDto> getParkingByAddress(String addr) {
-        List<Parking> parkings = iParkingRepository.findAllByAddrContaining(addr);
+    public List<ParkingDto> getParkingByAddressAndVehicule(String addr, String vehicule){
+        System.out.println(addr);
+        System.out.println(vehicule);
+        Vehicule v = null;
+        if (Objects.equals(vehicule, "CAR")) {
+            v=Vehicule.CAR;
+        }else if (Objects.equals(vehicule, "MOTO")){
+            v=Vehicule.MOTO;
+        }
+        List<Parking> parkings = null;
+        if (v!=null && addr!=null)
+            parkings=iParkingRepository.findByAddrContainingAndParkingType(addr,v);
+        else
+         parkings = iParkingRepository.findByAddrAndParkingTypeOptimized(addr,v);
         return parkings.stream().map(parking -> modelMapper.map(parking,ParkingDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public ReservationDto createReservation(Date startTime, Date endTime, Long parkingId, Long userId) {
+
+        List<ParkingSlot> emptySlots = parkingSlotRepository.findEmptySlotsBetweenPeriods(startTime, endTime, parkingId);
+        if (emptySlots.isEmpty()) {
+            throw new IllegalArgumentException("No available parking slots within the specified time period.");
+        }
+
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("Invalid user ID.");
+        }
+
+        Reservation reservation = new Reservation();
+        reservation.setStartTime(startTime);
+        reservation.setEndTime(endTime);
+        reservation.setUser(user.get());
+
+        ParkingSlot selectedSlot = emptySlots.get(0);
+        reservation.setParkingSlot(selectedSlot);
+
+        reservation = reservationRepository.save(reservation);
+
+
+        parkingSlotRepository.save(selectedSlot);
+
+        return modelMapper.map(reservation,ReservationDto.class);
     }
 }

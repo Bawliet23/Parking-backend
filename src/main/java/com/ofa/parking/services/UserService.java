@@ -67,8 +67,9 @@ public class UserService implements IUserService{
 
     @Override
     public UserDto login(LoginDto loginDto) {
-        Optional<User> user = iUserRepository.findUserByEmail(loginDto.getEmail());
-        if (user.isPresent() && passwordEncoder.matches(loginDto.getPassword(),user.get().getPassword())) return modelMapper.map(user.get(),UserDto.class);
+        User user = iUserRepository.findUserByEmail(loginDto.getEmail());
+        if (user!=null && passwordEncoder.matches(loginDto.getPassword(),user.getPassword()))
+            return modelMapper.map(user,UserDto.class);
         return null;
     }
 }
