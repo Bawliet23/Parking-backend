@@ -12,7 +12,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class UserService implements IUserService{
@@ -71,5 +74,11 @@ public class UserService implements IUserService{
         if (user!=null && passwordEncoder.matches(loginDto.getPassword(),user.getPassword()))
             return modelMapper.map(user,UserDto.class);
         return null;
+    }
+
+    @Override
+    public List<ReservationDto> getReservations(Long id) {
+        List<Reservation> reservations = iReservationRepository.findByUserIdOrderByIdDesc(id);
+        return reservations.stream().map(reservation -> modelMapper.map(reservation,ReservationDto.class)).collect(Collectors.toList());
     }
 }

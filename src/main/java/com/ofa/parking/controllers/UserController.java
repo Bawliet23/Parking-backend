@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/user")
 @AllArgsConstructor
@@ -34,5 +36,9 @@ public class UserController {
         if(!reservation)
             return ResponseEntity.badRequest().body("Reservation Failed");
         return ResponseEntity.ok().body("Checkout successful");
+    }
+    @GetMapping("/{id}/reservations")
+    public ResponseEntity<List<ReservationDto>> getReservations(@PathVariable Long id){
+        return ResponseEntity.ok(iUserService.getReservations(id));
     }
 }

@@ -14,10 +14,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+@EnableScheduling
 public class ParkingApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
@@ -44,19 +46,14 @@ public class ParkingApplication implements CommandLineRunner {
 
 
         ParkingSlot parkingSlot = new ParkingSlot();
-        parkingSlot.setEmpty(false);
         parkingSlot.setNumber(1);
         ParkingSlot parkingSlot1 = new ParkingSlot();
-        parkingSlot1.setEmpty(true);
         parkingSlot1.setNumber(2);
         ParkingSlot parkingSlot2 = new ParkingSlot();
-        parkingSlot2.setEmpty(false);
         parkingSlot2.setNumber(3);
         ParkingSlot parkingSlot3 = new ParkingSlot();
-        parkingSlot3.setEmpty(true);
         parkingSlot3.setNumber(4);
         ParkingSlot parkingSlot4 = new ParkingSlot();
-        parkingSlot4.setEmpty(true);
         parkingSlot4.setNumber(5);
 
 

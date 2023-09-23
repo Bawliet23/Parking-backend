@@ -14,7 +14,7 @@ public interface IParkingService {
     public List<ParkingDto> getNearestParking(double Lon,double lat);
     public ParkingDto getParkingById(Long id);
     public List<ParkingDto> getParkingByAddressAndVehicule(String addr, String vehicule);
-    public ReservationDto createReservation(Date startTime, Date endTime, Long parkingId, Long userId);
+    public ReservationDto createReservation(Date startTime, Date endTime, Long parkingId, Long userId,double price);
 
 
     }

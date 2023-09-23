@@ -58,14 +58,21 @@ public class ParkingService implements IParkingService{
         }
         List<Parking> parkings = null;
         if (v!=null && addr!=null)
+        {
+            System.out.println("1111");
             parkings=iParkingRepository.findByAddrContainingAndParkingType(addr,v);
+        }
         else
-         parkings = iParkingRepository.findByAddrAndParkingTypeOptimized(addr,v);
+        {
+            System.out.println("2222");
+            parkings = iParkingRepository.findByAddrAndParkingTypeOptimized(addr,v);
+        }
+
         return parkings.stream().map(parking -> modelMapper.map(parking,ParkingDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public ReservationDto createReservation(Date startTime, Date endTime, Long parkingId, Long userId) {
+    public ReservationDto createReservation(Date startTime, Date endTime, Long parkingId, Long userId,double price) {
 
         List<ParkingSlot> emptySlots = parkingSlotRepository.findEmptySlotsBetweenPeriods(startTime, endTime, parkingId);
         if (emptySlots.isEmpty()) {
@@ -73,7 +80,7 @@ public class ParkingService implements IParkingService{
         }
 
         Optional<User> user = userRepository.findById(userId);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new IllegalArgumentException("Invalid user ID.");
         }
 
@@ -84,6 +91,8 @@ public class ParkingService implements IParkingService{
 
         ParkingSlot selectedSlot = emptySlots.get(0);
         reservation.setParkingSlot(selectedSlot);
+
+        reservation.setPrice(price);
 
         reservation = reservationRepository.save(reservation);
 

@@ -14,4 +14,5 @@ public class ReservationDto {
     private Date startTime;
     private Date endTime;
     private boolean isCancelled;
+    private double price;
 }

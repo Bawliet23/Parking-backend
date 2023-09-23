@@ -1,6 +1,7 @@
 package com.ofa.parking.controllers;
 
 import com.ofa.parking.dtos.ParkingDto;
+import com.ofa.parking.dtos.ReservationDto;
 import com.ofa.parking.entities.Vehicule;
 import com.ofa.parking.services.IParkingService;
 import lombok.Data;
@@ -39,17 +40,21 @@ public class ParkingController {
     }
     @PostMapping("/reserve")
     public ResponseEntity<String> createReservation(
-            @RequestParam Long userId,
-            @RequestParam Long parkingId,
-            @RequestParam Date startTime,
-            @RequestParam Date endTime
+            @RequestParam("userId") Long userId,
+            @RequestParam("parkingId") Long parkingId,
+            @RequestParam("startTime") Date startTime,
+            @RequestParam("endTime") Date endTime,
+            @RequestParam double price
     ) {
         try {
-            iParkingService.createReservation(startTime, endTime, parkingId, userId);
+            iParkingService.createReservation(startTime, endTime, parkingId, userId,price);
+
             return ResponseEntity.status(HttpStatus.CREATED).body("Reservation created successfully.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
 
 }
