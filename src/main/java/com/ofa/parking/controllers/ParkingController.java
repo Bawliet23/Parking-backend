@@ -33,9 +33,9 @@ public class ParkingController {
     return parkingDtos;
     }
     @GetMapping("/filter")
-    public List<ParkingDto> getNearestParking(@RequestParam(required = false) String addr,@RequestParam(required = false) String vehicule){
+    public List<ParkingDto> getNearestParking(@RequestParam(required = false) String addr,@RequestParam(required = false) String vehicule,@RequestParam double lat,@RequestParam double lon){
         System.out.println(vehicule);
-        List<ParkingDto> parkingDtos=iParkingService.getParkingByAddressAndVehicule(addr,vehicule);
+        List<ParkingDto> parkingDtos=iParkingService.getParkingByAddressAndVehicule(addr,vehicule,lon,lat);
         return parkingDtos;
     }
     @PostMapping("/reserve")

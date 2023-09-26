@@ -47,6 +47,7 @@ public class ParkingApplication implements CommandLineRunner {
 
         ParkingSlot parkingSlot = new ParkingSlot();
         parkingSlot.setNumber(1);
+
         ParkingSlot parkingSlot1 = new ParkingSlot();
         parkingSlot1.setNumber(2);
         ParkingSlot parkingSlot2 = new ParkingSlot();
@@ -68,24 +69,34 @@ public class ParkingApplication implements CommandLineRunner {
         parking.setLon(-7.696186);
         parking.setLat(33.558316);
         parking.setPrice(3);
+        parking.setPhone("0644970548");
         parking.setParkingType(Vehicule.CAR);
+        Parking marrif = new Parking();
+        marrif.setName("Maârif");
+        marrif.setAddr("Maârif, Casablanca");
+        marrif.setLon(-7.630705);
+        marrif.setLat(33.584384);
+        marrif.setPrice(5);
+        marrif.setPhone("0644970548");
+        marrif.setParkingType(Vehicule.CAR);
 
 
        Parking parking1 =    parkingRepository.save(parking);
+       Parking marrif1 =    parkingRepository.save(marrif);
        parkingSlot.setParking(parking1);
        parkingSlot1.setParking(parking1);
-       parkingSlot2.setParking(parking1);
-       parkingSlot3.setParking(parking1);
-       parkingSlot4.setParking(parking1);
+       parkingSlot2.setParking(marrif1);
+       parkingSlot3.setParking(marrif1);
+       parkingSlot4.setParking(marrif1);
         parking1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot));
         parking1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot1));
-        parking1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot2));
-        parking1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot3));
-        parking1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot4));
+        marrif1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot2));
+        marrif1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot3));
+        marrif1.getParkingSlots().add(parkingSlotRepository.save(parkingSlot4));
 
         User mohamed = new User();
         mohamed.setEmail("mohamedbhajy23@gmail.com");
-        mohamed.setPassword(passwordEncoder().encode("qwerty"));
+        mohamed.setPassword(passwordEncoder().encode("Qwerty"));
         mohamed.setName("Bawliet");
         userRepository.save(mohamed);
 

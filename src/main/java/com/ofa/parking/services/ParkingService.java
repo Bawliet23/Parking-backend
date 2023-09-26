@@ -47,14 +47,17 @@ public class ParkingService implements IParkingService{
     }
 
     @Override
-    public List<ParkingDto> getParkingByAddressAndVehicule(String addr, String vehicule){
-        System.out.println(addr);
-        System.out.println(vehicule);
+    public List<ParkingDto> getParkingByAddressAndVehicule(String addr, String vehicule,double lon, double lat){
+
         Vehicule v = null;
         if (Objects.equals(vehicule, "CAR")) {
             v=Vehicule.CAR;
         }else if (Objects.equals(vehicule, "MOTO")){
             v=Vehicule.MOTO;
+        }else if (Objects.equals(vehicule, "TRACK")){
+            v=Vehicule.TRACK;
+        }else if (Objects.equals(vehicule, "BIKE")){
+            v=Vehicule.BIKE;
         }
         List<Parking> parkings = null;
         if (v!=null && addr!=null)
@@ -68,8 +71,10 @@ public class ParkingService implements IParkingService{
             parkings = iParkingRepository.findByAddrAndParkingTypeOptimized(addr,v);
         }
 
-        return parkings.stream().map(parking -> modelMapper.map(parking,ParkingDto.class)).collect(Collectors.toList());
-    }
+        List<ParkingDto> parkingDtos = parkings.stream().map(parking -> modelMapper.map(parking,ParkingDto.class)).collect(Collectors.toList());
+        parkingDtos.forEach(parkingDto ->  parkingDto.setDistance(Distance.calculateDistance(lat,lon,parkingDto.getLat(),parkingDto.getLon())));
+        return parkingDtos;
+     }
 
     @Override
     public ReservationDto createReservation(Date startTime, Date endTime, Long parkingId, Long userId,double price) {

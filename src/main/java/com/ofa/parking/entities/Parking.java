@@ -18,6 +18,7 @@ public class Parking {
     private Long id;
     private String name;
     private String addr;
+    private String phone;
     private double lat;
     private double lon;
     private double price;
